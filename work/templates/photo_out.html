@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Photo Checking</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  </head>
+  <body>
+    <h1>Photo Checking(退店)</h1>
+    <img src="{{ url_for('video_feed_out') }}">
+    <!-- jinja2のテンプレートの書き方です。/video_feedを呼
+    び出しています。 -->
+    <img src="/static/images_out/{{filename}}" alt="取得画像"  />
+    <form method="post">
+        <button type="submit" class="btn btn-primary">撮影</button>
+    </form>
+  </body>
+</html>
