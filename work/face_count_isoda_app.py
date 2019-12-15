@@ -1,8 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # ライブラリのインポート
-# from base_camera import BaseCamera
 from flask import Flask,render_template, Response
 import numpy as np
 import os
