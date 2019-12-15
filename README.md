@@ -12,3 +12,8 @@ HAIT Lab 2期 東京 Dチーム の最終プロダクトです．
 - [ ] flaskとの連携
     - [x] 映像を出力
     - [ ] 人数を出力
+
+### 注
+face_count_isoda.pyは使いません．openCVの動作確認のために作成しました．
+
+flaskで実装する際は，face_count_isoda_app.pyを使ってください．
