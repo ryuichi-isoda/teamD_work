@@ -20,12 +20,6 @@ class Camera(object):
     WINDOW_NAME_IN = "in" # inのwindow nameの指定
     WINDOW_NAME_OUT = "out" # outのwindow nameの指定
 
-    # 分類器の指定
-    cascade_file = "haarcascade_frontalface_default.xml"
-
-    # 分類器の読み込み
-    cascade = cv2.CascadeClassifier(cascade_file)
-
     def __init__(self):
         # デバイスの指定
         DEVICE_ID_IN = 0
@@ -40,6 +34,11 @@ class Camera(object):
         # self.video_out.release()
 
     def get_frame_in(self):
+        # 分類器の指定
+        cascade_file = "haarcascade_frontalface_default.xml"
+
+        # 分類器の読み込み
+        cascade = cv2.CascadeClassifier(cascade_file)
         # フレームの読み込み
         success_in, image_in = self.video_in.read()
         # 人数の初期値
@@ -48,20 +47,20 @@ class Camera(object):
         while success_in == True:
             # 画像の取得と顔の検出
             height, width, channels = image_in.shape
-            face_list_in = cascade.detectMultiScale(img_in, minSize=(100, 100))
+            face_list_in = cascade.detectMultiScale(image_in, minSize=(100, 100))
             # 検出した顔に印を付ける
             for (x, y, w, h) in face_list_in:
                 # 白のフレームに指定
                 color = (255, 255, 225)
                 pen_w = 3
-                cv2.rectangle(img_in, (x, y), (x+w, y+h), color, thickness = pen_w)
+                cv2.rectangle(image_in, (x, y), (x+w, y+h), color, thickness = pen_w)
                 count_in += 1
             # 左右反転処理
-            img_in_flip_lr = cv2.flip(image_in, 1)
+            image_in_flip_lr = cv2.flip(image_in, 1)
             # jpgに変換
-            ret_in, jpeg_in = cv2.imencode('.jpg', img_in_flip_lr)
+            ret_in, jpeg_in = cv2.imencode('.jpg', image_in_flip_lr)
             # フレーム表示
-            # cv2.imshow(WINDOW_NAME_IN, img_in_flip_lr)
+            # cv2.imshow(WINDOW_NAME_IN, image_in_flip_lr)
             # 変換したものを返す
             return jpeg_in.tobytes()
             # Escキーで終了
@@ -73,6 +72,10 @@ class Camera(object):
         cv2.destroyAllWindows()
 
     # def get_frame_out(self):
+    #     # 分類器の指定
+    #     cascade_file = "haarcascade_frontalface_default.xml"
+    #     # 分類器の読み込み
+    #     cascade = cv2.CascadeClassifier(cascade_file)
     #     success_out, image_out = self.video_out.read()
     #     img_out_flip_lr = cv2.flip(image_out, 1)
     #     ret_out, jpeg_out = cv2.imencode('.jpg', img_out_flip_lr)
@@ -84,12 +87,12 @@ class Camera(object):
         if not os.path.exists(dirname_in):
             os.mkdir(dirname_in)
         success_in, image_in = self.video_in.read()
-        img_in_flip_lr = cv2.flip(image_in, 1)
+        image_in_flip_lr = cv2.flip(image_in, 1)
         file_name_in = str(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")) + ".jpg"
         try:
             for i in os.listdir(dirname_in):
                     os.remove(os.path.join(dirname_in,i))
-            cv2.imwrite(os.path.join(dirname_in,file_name_in), img_in_flip_lr)
+            cv2.imwrite(os.path.join(dirname_in,file_name_in), image_in_flip_lr)
             print("saved")
         except:
             save("not saved")
@@ -129,19 +132,19 @@ class Camera(object):
         # 変換処理ループ
         while end_flag == True:
             # 画像の取得と顔の検出
-            img_in = c_frame_in
-            face_list_in = cascade.detectMultiScale(img_in, minSize=(100, 100))
+            image_in = c_frame_in
+            face_list_in = cascade.detectMultiScale(image_in, minSize=(100, 100))
             # 検出した顔に印を付ける
             for (x, y, w, h) in face_list_in:
                 # 白のフレームに指定
                 color = (255, 255, 225)
                 pen_w = 3
-                cv2.rectangle(img_in, (x, y), (x+w, y+h), color, thickness = pen_w)
+                cv2.rectangle(image_in, (x, y), (x+w, y+h), color, thickness = pen_w)
                 count_in += 1
             # 左右反転
-            img_in_flip = cv2.flip(img_in, 1)
+            image_in_flip = cv2.flip(image_in, 1)
             # フレーム表示
-            cv2.imshow(WINDOW_NAME_IN, img_in_flip)
+            cv2.imshow(WINDOW_NAME_IN, image_in_flip)
 
             # # 画像の取得と顔の検出
             # img_out = c_frame_out

@@ -59,22 +59,22 @@ if __name__ == '__main__':
     while end_flag == True:
 
         # 画像の取得と顔の検出
-        img_in = c_frame_in
+        image_in = c_frame_in
 
-        face_list_in = cascade.detectMultiScale(img_in, minSize=(100, 100))
+        face_list_in = cascade.detectMultiScale(image_in, minSize=(100, 100))
 
         # 検出した顔に印を付ける
         for (x, y, w, h) in face_list_in:
             # 白のフレームに指定
             color = (255, 255, 225)
             pen_w = 3
-            cv2.rectangle(img_in, (x, y), (x+w, y+h), color, thickness = pen_w)
+            cv2.rectangle(image_in, (x, y), (x+w, y+h), color, thickness = pen_w)
             count_in += 1
         # 左右反転
-        img_in_flip = cv2.flip(img_in, 1)
+        image_in_flip = cv2.flip(image_in, 1)
         # フレーム表示
 
-        cv2.imshow(WINDOW_NAME_IN, img_in_flip)
+        cv2.imshow(WINDOW_NAME_IN, image_in_flip)
 
 
         # # 画像の取得と顔の検出
