@@ -69,6 +69,8 @@
 			<div class="shop-group clearfix">
 				<div class="left-content">
 					<h3 class="discription-title">入店カメラ</h3>
+					<h5>入店者数</h5>
+					<!-- <p>{{count_in}}</p> -->
 					<!-- ここにinの映像を挿入する -->
 					<div class="movie">
 						<img src="{{ url_for('video_feed_in') }}", width="420px", height="280px">
@@ -79,6 +81,8 @@
 				</div>
 				<div class="right-contet">
 					<h3 class="discription-title">退店カメラ</h3>
+					<h5>退店者数</h5>
+					<!-- <p>{{count_out}}</p> -->
 					<!-- ここにoutの映像を挿入する -->
 					<img src="{{ url_for('video_feed_in') }}", width="420px", height="280px">
 				    <form method="post">
