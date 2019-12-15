@@ -19,13 +19,14 @@ class Camera(object):
     def __init__(self):
         # デバイスの指定
         DEVICE_ID_IN = 0
+        # 開発中はPCのカメラののみ使用しているので，デバイスの指定が一緒になっている．
         DEVICE_ID_OUT = 0
         # カメラの映像を取得
         self.video_in = cv2.VideoCapture(DEVICE_ID_IN)
         self.video_out = cv2.VideoCapture(DEVICE_ID_OUT)
 
     def __del__(self):
-        # 終了処理
+        # 終了処理（実行の仕方が不明）
         self.video_in.release()
         self.video_out.release()
 
@@ -38,7 +39,7 @@ class Camera(object):
         success_in, image_in = self.video_in.read()
         # 人数の初期値
         count_in = 0
-        # 変換処理ループ
+        # 顔検出処理ループ
         while success_in == True:
             # 画像の取得と顔の検出
             height, width, channels = image_in.shape
@@ -55,9 +56,14 @@ class Camera(object):
             image_in_flip_lr = cv2.flip(image_in, 1)
             # jpgに変換
             ret_in, jpeg_in = cv2.imencode('.jpg', image_in_flip_lr)
+
+            # 入店者数を返す．以下のように記述すると映像が出力されなくなる．
+            # どうすれば映像と人数が同時にhtmlに出力できるうようなるか検討中
+            # return render_template('index.html', count_in=count_in)
+
             # 変換したものを返す
             return jpeg_in.tobytes()
-            # Escキーで終了
+            # Escキーで終了（機能していない）
             key = cv2.waitKey(INTERVAL)
             if key == ESC_KEY:
                 break
@@ -73,7 +79,7 @@ class Camera(object):
         success_out, image_out = self.video_out.read()
         # 人数の初期値
         count_out = 0
-        # 変換処理ループ
+        # 顔検出処理ループ
         while success_out == True:
             # 画像の取得と顔の検出
             height, width, channels = image_out.shape
@@ -92,14 +98,14 @@ class Camera(object):
             ret_out, jpeg_out = cv2.imencode('.jpg', image_out_flip_lr)
             # 変換したものを返す
             return jpeg_out.tobytes()
-            # Escキーで終了
+            # Escキーで終了（機能していない）
             key = cv2.waitKey(INTERVAL)
             if key == ESC_KEY:
                 break
             # 次のフレーム読み込み
             success_out, image_out = cap_in.read()
 
-    # ファイルの保存
+    # ファイルの保存（今回は実装しない予定）
     # def save_frame_in(self):
     #     dirname_in = './static/images_in/'
     #     if not os.path.exists(dirname_in):
@@ -116,7 +122,7 @@ class Camera(object):
     #         save("not saved")
     #     return file_name_in
 
-    # ファイルの保存
+    # ファイルの保存（今回は実装しない予定）
     # def save_frame_out(self):
     #     dirname_out = './static/images_out/'
     #     if not os.path.exists(dirname_out):
@@ -132,68 +138,4 @@ class Camera(object):
     #     except:
     #         save("not saved")
     #     return file_name_out
-
-
-    # def frames():
-    #     height, width, channels = c_frame_in.shape
-    #     # end_flag, c_frame_out = cap_out.read()
-    #     # height, width, channels = c_frame_out.shape
-    #
-    #     # ウィンドウの準備
-    #     cv2.namedWindow(WINDOW_NAME_IN)
-    #     # cv2.namedWindow(WINDOW_NAME_OUT)
-    #
-    #     # 人数の初期値
-    #     count_in = 0
-    #     # count_out = 0
-    #
-    #     # 変換処理ループ
-    #     while end_flag == True:
-    #         # 画像の取得と顔の検出
-    #         image_in = c_frame_in
-    #         face_list_in = cascade.detectMultiScale(image_in, minSize=(100, 100))
-    #         # 検出した顔に印を付ける
-    #         for (x, y, w, h) in face_list_in:
-    #             # 白のフレームに指定
-    #             color = (255, 255, 225)
-    #             pen_w = 3
-    #             cv2.rectangle(image_in, (x, y), (x+w, y+h), color, thickness = pen_w)
-    #             count_in += 1
-    #         # 左右反転
-    #         image_in_flip = cv2.flip(image_in, 1)
-    #         # フレーム表示
-    #         cv2.imshow(WINDOW_NAME_IN, image_in_flip)
-    #
-    #         # # 画像の取得と顔の検出
-    #         # img_out = c_frame_out
-    #         # #img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #         # face_list_out = cascade.detectMultiScale(img_out, minSize=(100, 100))
-    #         #
-    #         # # 検出した顔に印を付ける
-    #         # for (x, y, w, h) in face_list_out:
-    #         #     # 白のフレームに指定
-    #         #     color = (255, 255, 225)
-    #         #     pen_w = 3
-    #         #     cv2.rectangle(img_out, (x, y), (x+w, y+h), color, thickness = pen_w)
-    #         #     count_out += 1
-    #         #
-    #         # # 左右反転
-    #         # img_out_flip = cv2.flip(img_out, 1)
-    #         #
-    #         # # フレーム表示
-    #         # cv2.imshow(WINDOW_NAME_OUT, img_out_flip)
-    #
-    #         # 部屋の人数をnumで定義
-    #         # num = count_in - count_out
-    #         num = count_in
-    #
-    #         # Escキーで終了
-    #         key = cv2.waitKey(INTERVAL)
-    #         if key == ESC_KEY:
-    #             break
-    #         # 次のフレーム読み込み
-    #         end_flag, c_frame_in = cap_in.read()
-    #         # end_flag, c_frame_out = cap_out.read()
-    #
-    #     cv2.destroyAllWindows()
-    #     # return render_template('index.html', num = num)
+    
