@@ -13,9 +13,12 @@ def index():
 # ----------------------------------------
 def gen(camera):
     while True:
-        frame = camera.get_frame_in()
+        frame_in = camera.get_frame_in()
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_in + b'\r\n\r\n')
+        frame_out = camera.get_frame_out()
+        yield (b'--frame\r\n'
+              b'Content-Type: image/jpeg\r\n\r\n' + frame_out + b'\r\n\r\n')
 
 @app.route('/video_feed_in')
 def video_feed_in():
