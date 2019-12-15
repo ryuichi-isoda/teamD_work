@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 # ライブラリのインポート
 from flask import Flask,render_template, Response
 import numpy as np
@@ -138,4 +140,3 @@ class Camera(object):
     #     except:
     #         save("not saved")
     #     return file_name_out
-    
